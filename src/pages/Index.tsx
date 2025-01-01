@@ -8,7 +8,6 @@ import { EngagementMetrics } from "@/components/EngagementMetrics";
 import { TrendingPosts } from "@/components/TrendingPosts";
 import { TrendAnalytics } from "@/components/TrendAnalytics";
 
-// Move mock data to separate files later if it grows too large
 const mockTrends = {
   instagram: [
     { tag: "fashion", growth: 23, posts: 1234567 },
@@ -30,6 +29,10 @@ const mockTrendingPosts = {
       engagement: { likes: 250000, comments: 15000, shares: 5000 },
       creator: "fashionista",
       caption: "Summer vibes with the latest collection 🌞 #fashion #summer",
+      engagementVelocity: {
+        rate: 2.5,
+        trend: "rising" as const
+      }
     },
     {
       platform: "instagram" as const,
@@ -41,6 +44,10 @@ const mockTrendingPosts = {
       },
       creator: "travelguru",
       caption: "Exploring hidden gems in Bali 🌴 #travel #wanderlust",
+      engagementVelocity: {
+        rate: 1.2,
+        trend: "stable" as const
+      }
     },
     {
       platform: "instagram" as const,
@@ -52,6 +59,10 @@ const mockTrendingPosts = {
       },
       creator: "foodlover",
       caption: "The perfect brunch doesn't exi- 😍 #foodie #brunch",
+      engagementVelocity: {
+        rate: 3.8,
+        trend: "rising" as const
+      }
     },
   ],
   tiktok: [
@@ -61,6 +72,10 @@ const mockTrendingPosts = {
       engagement: { likes: 500000, comments: 25000, shares: 100000 },
       creator: "dancepro",
       caption: "New dance challenge! Try it with your friends 💃 #dancechallenge",
+      engagementVelocity: {
+        rate: 5.2,
+        trend: "rising" as const
+      }
     },
     {
       platform: "tiktok" as const,
@@ -72,6 +87,10 @@ const mockTrendingPosts = {
       },
       creator: "comedyking",
       caption: "When your mom asks about your day 😂 #comedy #relatable",
+      engagementVelocity: {
+        rate: 0.8,
+        trend: "falling" as const
+      }
     },
     {
       platform: "tiktok" as const,
@@ -83,6 +102,10 @@ const mockTrendingPosts = {
       },
       creator: "musicstar",
       caption: "Cover of the latest hit song 🎵 #music #cover",
+      engagementVelocity: {
+        rate: 4.1,
+        trend: "rising" as const
+      }
     },
   ],
 };

@@ -1,5 +1,7 @@
+import React from "react";
 import { Card } from "@/components/ui/card";
-import { Play, Heart, MessageCircle, Share2 } from "lucide-react";
+import { Play, Heart, MessageCircle, Share2, TrendingUp } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 interface Post {
   platform: "instagram" | "tiktok";
@@ -11,6 +13,10 @@ interface Post {
   };
   creator: string;
   caption: string;
+  engagementVelocity?: {
+    rate: number; // engagement increase per hour
+    trend: "rising" | "stable" | "falling";
+  };
 }
 
 interface TrendingPostsProps {
@@ -18,6 +24,17 @@ interface TrendingPostsProps {
 }
 
 export const TrendingPosts = ({ posts }: TrendingPostsProps) => {
+  const getVelocityColor = (trend: "rising" | "stable" | "falling") => {
+    switch (trend) {
+      case "rising":
+        return "bg-green-500";
+      case "falling":
+        return "bg-red-500";
+      default:
+        return "bg-yellow-500";
+    }
+  };
+
   return (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold">Trending Posts</h2>
@@ -33,6 +50,16 @@ export const TrendingPosts = ({ posts }: TrendingPostsProps) => {
               {post.platform === "tiktok" && (
                 <div className="absolute bottom-2 right-2">
                   <Play className="h-6 w-6 text-white drop-shadow-lg" />
+                </div>
+              )}
+              {post.engagementVelocity && (
+                <div className="absolute top-2 right-2">
+                  <Badge 
+                    className={`${getVelocityColor(post.engagementVelocity.trend)} text-white`}
+                  >
+                    <TrendingUp className="h-3 w-3 mr-1" />
+                    {post.engagementVelocity.rate}x/hr
+                  </Badge>
                 </div>
               )}
             </div>
