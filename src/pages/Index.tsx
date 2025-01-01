@@ -88,8 +88,31 @@ const mockCreators = {
   ],
 };
 
-// Add mock data for trending posts
-const mockTrendingPosts = {
+// Update the type for platform in mockTrendingPosts
+const mockTrendingPosts: {
+  instagram: Array<{
+    platform: "instagram";
+    thumbnail: string;
+    engagement: {
+      likes: number;
+      comments: number;
+      shares: number;
+    };
+    creator: string;
+    caption: string;
+  }>;
+  tiktok: Array<{
+    platform: "tiktok";
+    thumbnail: string;
+    engagement: {
+      likes: number;
+      comments: number;
+      shares: number;
+    };
+    creator: string;
+    caption: string;
+  }>;
+} = {
   instagram: [
     {
       platform: "instagram",
