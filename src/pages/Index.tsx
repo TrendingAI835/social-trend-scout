@@ -32,7 +32,7 @@ const mockTrendingPosts = {
       caption: "Summer vibes with the latest collection 🌞 #fashion #summer",
     },
     {
-      platform: "instagram",
+      platform: "instagram" as const,
       thumbnail: "/placeholder.svg",
       engagement: {
         likes: 180000,
@@ -43,7 +43,7 @@ const mockTrendingPosts = {
       caption: "Exploring hidden gems in Bali 🌴 #travel #wanderlust",
     },
     {
-      platform: "instagram",
+      platform: "instagram" as const,
       thumbnail: "/placeholder.svg",
       engagement: {
         likes: 320000,
@@ -63,7 +63,7 @@ const mockTrendingPosts = {
       caption: "New dance challenge! Try it with your friends 💃 #dancechallenge",
     },
     {
-      platform: "tiktok",
+      platform: "tiktok" as const,
       thumbnail: "/placeholder.svg",
       engagement: {
         likes: 450000,
@@ -74,7 +74,7 @@ const mockTrendingPosts = {
       caption: "When your mom asks about your day 😂 #comedy #relatable",
     },
     {
-      platform: "tiktok",
+      platform: "tiktok" as const,
       thumbnail: "/placeholder.svg",
       engagement: {
         likes: 600000,
