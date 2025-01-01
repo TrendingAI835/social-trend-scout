@@ -5,8 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { CreatorAnalytics } from "@/components/CreatorAnalytics";
 import { EngagementMetrics } from "@/components/EngagementMetrics";
+import { TrendingPosts } from "@/components/TrendingPosts";
 
-// Mock data - in a real app, this would come from an API
 const mockTrends = {
   instagram: [
     { tag: "fashion", growth: 23, posts: 1234567 },
@@ -88,6 +88,80 @@ const mockCreators = {
   ],
 };
 
+// Add mock data for trending posts
+const mockTrendingPosts = {
+  instagram: [
+    {
+      platform: "instagram",
+      thumbnail: "/placeholder.svg",
+      engagement: {
+        likes: 250000,
+        comments: 15000,
+        shares: 5000,
+      },
+      creator: "fashionista",
+      caption: "Summer vibes with the latest collection 🌞 #fashion #summer",
+    },
+    {
+      platform: "instagram",
+      thumbnail: "/placeholder.svg",
+      engagement: {
+        likes: 180000,
+        comments: 12000,
+        shares: 3500,
+      },
+      creator: "travelguru",
+      caption: "Exploring hidden gems in Bali 🌴 #travel #wanderlust",
+    },
+    {
+      platform: "instagram",
+      thumbnail: "/placeholder.svg",
+      engagement: {
+        likes: 320000,
+        comments: 18000,
+        shares: 7000,
+      },
+      creator: "foodlover",
+      caption: "The perfect brunch doesn't exi- 😍 #foodie #brunch",
+    },
+  ],
+  tiktok: [
+    {
+      platform: "tiktok",
+      thumbnail: "/placeholder.svg",
+      engagement: {
+        likes: 500000,
+        comments: 25000,
+        shares: 100000,
+      },
+      creator: "dancepro",
+      caption: "New dance challenge! Try it with your friends 💃 #dancechallenge",
+    },
+    {
+      platform: "tiktok",
+      thumbnail: "/placeholder.svg",
+      engagement: {
+        likes: 450000,
+        comments: 20000,
+        shares: 80000,
+      },
+      creator: "comedyking",
+      caption: "When your mom asks about your day 😂 #comedy #relatable",
+    },
+    {
+      platform: "tiktok",
+      thumbnail: "/placeholder.svg",
+      engagement: {
+        likes: 600000,
+        comments: 30000,
+        shares: 120000,
+      },
+      creator: "musicstar",
+      caption: "Cover of the latest hit song 🎵 #music #cover",
+    },
+  ],
+};
+
 const Index = () => {
   const [platform, setPlatform] = useState<"instagram" | "tiktok">("instagram");
   const [search, setSearch] = useState("");
@@ -115,6 +189,8 @@ const Index = () => {
       </div>
 
       <div className="space-y-12">
+        <TrendingPosts posts={mockTrendingPosts[platform]} />
+        
         <div className="mb-8">
           <TrendingTopics trends={filteredTrends} />
         </div>
