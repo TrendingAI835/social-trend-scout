@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Instagram, TiktokIcon } from "lucide-react";
+import { Instagram, Music2 } from "lucide-react";
 
 interface PlatformSelectorProps {
   platform: "instagram" | "tiktok";
@@ -22,7 +22,7 @@ export const PlatformSelector = ({ platform, onChange }: PlatformSelectorProps) 
         className="platform-button"
         onClick={() => onChange("tiktok")}
       >
-        <TiktokIcon className="mr-2 h-4 w-4" />
+        <Music2 className="mr-2 h-4 w-4" />
         TikTok
       </Button>
     </div>
