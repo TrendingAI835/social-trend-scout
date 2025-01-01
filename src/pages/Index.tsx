@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { TrendingTopics } from "@/components/TrendingTopics";
-import { TrendGraph } from "@/components/TrendGraph";
 import { PlatformSelector } from "@/components/PlatformSelector";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
+import { CreatorAnalytics } from "@/components/CreatorAnalytics";
+import { EngagementMetrics } from "@/components/EngagementMetrics";
 
 // Mock data - in a real app, this would come from an API
 const mockTrends = {
@@ -25,15 +26,67 @@ const mockTrends = {
   ],
 };
 
-const mockGraphData = [
-  { date: "Jan", value: 4000 },
-  { date: "Feb", value: 3000 },
-  { date: "Mar", value: 5000 },
-  { date: "Apr", value: 2780 },
-  { date: "May", value: 1890 },
-  { date: "Jun", value: 2390 },
-  { date: "Jul", value: 3490 },
-];
+// Mock data for creators
+const mockCreators = {
+  instagram: [
+    {
+      username: "fashionista",
+      engagement: 34,
+      followers: 1200000,
+      posts: 1500,
+      avgLikes: 50000,
+      avgComments: 2500,
+      avgShares: 1500,
+    },
+    {
+      username: "travelguru",
+      engagement: 28,
+      followers: 800000,
+      posts: 1200,
+      avgLikes: 35000,
+      avgComments: 1800,
+      avgShares: 1200,
+    },
+    {
+      username: "foodlover",
+      engagement: 42,
+      followers: 1500000,
+      posts: 2000,
+      avgLikes: 65000,
+      avgComments: 3200,
+      avgShares: 2100,
+    },
+  ],
+  tiktok: [
+    {
+      username: "dancepro",
+      engagement: 56,
+      followers: 2500000,
+      posts: 500,
+      avgLikes: 150000,
+      avgComments: 8000,
+      avgShares: 25000,
+    },
+    {
+      username: "comedyking",
+      engagement: 48,
+      followers: 1800000,
+      posts: 400,
+      avgLikes: 120000,
+      avgComments: 6500,
+      avgShares: 18000,
+    },
+    {
+      username: "musicstar",
+      engagement: 62,
+      followers: 3000000,
+      posts: 600,
+      avgLikes: 180000,
+      avgComments: 9500,
+      avgShares: 30000,
+    },
+  ],
+};
 
 const Index = () => {
   const [platform, setPlatform] = useState<"instagram" | "tiktok">("instagram");
@@ -61,14 +114,15 @@ const Index = () => {
         />
       </div>
 
-      <div className="mb-8">
-        <TrendingTopics trends={filteredTrends} />
-      </div>
+      <div className="space-y-12">
+        <div className="mb-8">
+          <TrendingTopics trends={filteredTrends} />
+        </div>
 
-      <TrendGraph
-        data={mockGraphData}
-        title={`Trend Growth Over Time (${platform.charAt(0).toUpperCase() + platform.slice(1)})`}
-      />
+        <EngagementMetrics platform={platform} />
+        
+        <CreatorAnalytics creators={mockCreators[platform]} />
+      </div>
     </div>
   );
 };
