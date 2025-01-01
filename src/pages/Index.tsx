@@ -6,27 +6,87 @@ import { Search } from "lucide-react";
 import { CreatorAnalytics } from "@/components/CreatorAnalytics";
 import { EngagementMetrics } from "@/components/EngagementMetrics";
 import { TrendingPosts } from "@/components/TrendingPosts";
+import { TrendAnalytics } from "@/components/TrendAnalytics";
 
+// Move mock data to separate files later if it grows too large
 const mockTrends = {
   instagram: [
     { tag: "fashion", growth: 23, posts: 1234567 },
     { tag: "beauty", growth: 15, posts: 987654 },
     { tag: "travel", growth: 45, posts: 567890 },
-    { tag: "food", growth: 12, posts: 345678 },
-    { tag: "fitness", growth: 34, posts: 234567 },
-    { tag: "lifestyle", growth: 18, posts: 123456 },
   ],
   tiktok: [
     { tag: "dance", growth: 56, posts: 2345678 },
     { tag: "comedy", growth: 34, posts: 1876543 },
     { tag: "music", growth: 67, posts: 987654 },
-    { tag: "challenge", growth: 45, posts: 654321 },
-    { tag: "tutorial", growth: 23, posts: 432198 },
-    { tag: "pov", growth: 38, posts: 321987 },
   ],
 };
 
-// Mock data for creators
+const mockTrendingPosts = {
+  instagram: [
+    {
+      platform: "instagram" as const,
+      thumbnail: "/placeholder.svg",
+      engagement: { likes: 250000, comments: 15000, shares: 5000 },
+      creator: "fashionista",
+      caption: "Summer vibes with the latest collection 🌞 #fashion #summer",
+    },
+    {
+      platform: "instagram",
+      thumbnail: "/placeholder.svg",
+      engagement: {
+        likes: 180000,
+        comments: 12000,
+        shares: 3500,
+      },
+      creator: "travelguru",
+      caption: "Exploring hidden gems in Bali 🌴 #travel #wanderlust",
+    },
+    {
+      platform: "instagram",
+      thumbnail: "/placeholder.svg",
+      engagement: {
+        likes: 320000,
+        comments: 18000,
+        shares: 7000,
+      },
+      creator: "foodlover",
+      caption: "The perfect brunch doesn't exi- 😍 #foodie #brunch",
+    },
+  ],
+  tiktok: [
+    {
+      platform: "tiktok" as const,
+      thumbnail: "/placeholder.svg",
+      engagement: { likes: 500000, comments: 25000, shares: 100000 },
+      creator: "dancepro",
+      caption: "New dance challenge! Try it with your friends 💃 #dancechallenge",
+    },
+    {
+      platform: "tiktok",
+      thumbnail: "/placeholder.svg",
+      engagement: {
+        likes: 450000,
+        comments: 20000,
+        shares: 80000,
+      },
+      creator: "comedyking",
+      caption: "When your mom asks about your day 😂 #comedy #relatable",
+    },
+    {
+      platform: "tiktok",
+      thumbnail: "/placeholder.svg",
+      engagement: {
+        likes: 600000,
+        comments: 30000,
+        shares: 120000,
+      },
+      creator: "musicstar",
+      caption: "Cover of the latest hit song 🎵 #music #cover",
+    },
+  ],
+};
+
 const mockCreators = {
   instagram: [
     {
@@ -88,103 +148,6 @@ const mockCreators = {
   ],
 };
 
-// Update the type for platform in mockTrendingPosts
-const mockTrendingPosts: {
-  instagram: Array<{
-    platform: "instagram";
-    thumbnail: string;
-    engagement: {
-      likes: number;
-      comments: number;
-      shares: number;
-    };
-    creator: string;
-    caption: string;
-  }>;
-  tiktok: Array<{
-    platform: "tiktok";
-    thumbnail: string;
-    engagement: {
-      likes: number;
-      comments: number;
-      shares: number;
-    };
-    creator: string;
-    caption: string;
-  }>;
-} = {
-  instagram: [
-    {
-      platform: "instagram",
-      thumbnail: "/placeholder.svg",
-      engagement: {
-        likes: 250000,
-        comments: 15000,
-        shares: 5000,
-      },
-      creator: "fashionista",
-      caption: "Summer vibes with the latest collection 🌞 #fashion #summer",
-    },
-    {
-      platform: "instagram",
-      thumbnail: "/placeholder.svg",
-      engagement: {
-        likes: 180000,
-        comments: 12000,
-        shares: 3500,
-      },
-      creator: "travelguru",
-      caption: "Exploring hidden gems in Bali 🌴 #travel #wanderlust",
-    },
-    {
-      platform: "instagram",
-      thumbnail: "/placeholder.svg",
-      engagement: {
-        likes: 320000,
-        comments: 18000,
-        shares: 7000,
-      },
-      creator: "foodlover",
-      caption: "The perfect brunch doesn't exi- 😍 #foodie #brunch",
-    },
-  ],
-  tiktok: [
-    {
-      platform: "tiktok",
-      thumbnail: "/placeholder.svg",
-      engagement: {
-        likes: 500000,
-        comments: 25000,
-        shares: 100000,
-      },
-      creator: "dancepro",
-      caption: "New dance challenge! Try it with your friends 💃 #dancechallenge",
-    },
-    {
-      platform: "tiktok",
-      thumbnail: "/placeholder.svg",
-      engagement: {
-        likes: 450000,
-        comments: 20000,
-        shares: 80000,
-      },
-      creator: "comedyking",
-      caption: "When your mom asks about your day 😂 #comedy #relatable",
-    },
-    {
-      platform: "tiktok",
-      thumbnail: "/placeholder.svg",
-      engagement: {
-        likes: 600000,
-        comments: 30000,
-        shares: 120000,
-      },
-      creator: "musicstar",
-      caption: "Cover of the latest hit song 🎵 #music #cover",
-    },
-  ],
-};
-
 const Index = () => {
   const [platform, setPlatform] = useState<"instagram" | "tiktok">("instagram");
   const [search, setSearch] = useState("");
@@ -214,6 +177,12 @@ const Index = () => {
       <div className="space-y-12">
         <TrendingPosts posts={mockTrendingPosts[platform]} />
         
+        <div className="grid gap-6 md:grid-cols-2">
+          {filteredTrends.map((trend) => (
+            <TrendAnalytics key={trend.tag} tag={trend.tag} />
+          ))}
+        </div>
+
         <div className="mb-8">
           <TrendingTopics trends={filteredTrends} />
         </div>
