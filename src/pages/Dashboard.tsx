@@ -1,8 +1,6 @@
 import { useState } from "react";
+import { DashboardHeader } from "@/components/DashboardHeader";
 import { TrendingTopics } from "@/components/TrendingTopics";
-import { PlatformSelector } from "@/components/PlatformSelector";
-import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
 import { CreatorAnalytics } from "@/components/CreatorAnalytics";
 import { EngagementMetrics } from "@/components/EngagementMetrics";
 import { TrendingPosts } from "@/components/TrendingPosts";
@@ -171,7 +169,7 @@ const mockCreators = {
   ],
 };
 
-const Index = () => {
+const Dashboard = () => {
   const [platform, setPlatform] = useState<"instagram" | "tiktok">("instagram");
   const [search, setSearch] = useState("");
 
@@ -181,23 +179,14 @@ const Index = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <h1 className="text-3xl font-bold">Social Media Trends</h1>
-        <PlatformSelector platform={platform} onChange={setPlatform} />
-      </div>
+      <DashboardHeader
+        platform={platform}
+        search={search}
+        onPlatformChange={setPlatform}
+        onSearchChange={setSearch}
+      />
 
-      <div className="relative mb-8">
-        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-        <Input
-          type="text"
-          placeholder="Search trends..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="pl-10"
-        />
-      </div>
-
-      <div className="space-y-12">
+      <div className="space-y-12 mt-8">
         <TrendingPosts posts={mockTrendingPosts[platform]} />
         
         <div className="grid gap-6 md:grid-cols-2">
@@ -218,4 +207,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default Dashboard;
