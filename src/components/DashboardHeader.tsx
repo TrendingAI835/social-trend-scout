@@ -24,14 +24,14 @@ export const DashboardHeader = ({
     <div className="space-y-8">
       <div className="flex items-center justify-between">
         <Button
-          variant="ghost"
-          size="icon"
+          variant="outline"
           onClick={() => navigate("/")}
-          className="mr-4"
+          className="gap-2"
         >
-          <ArrowLeft className="h-4 w-4" />
+          <ArrowLeft className="h-5 w-5" />
+          Back
         </Button>
-        <h1 className="text-3xl font-bold flex-1 text-left">Social Media Trends</h1>
+        <h1 className="text-3xl font-bold flex-1 text-center">Social Media Trends</h1>
         <PlatformSelector platform={platform} onChange={onPlatformChange} />
       </div>
 
