@@ -6,6 +6,8 @@ import { EngagementMetrics } from "@/components/EngagementMetrics";
 import { TrendingPosts } from "@/components/TrendingPosts";
 import { TrendAnalytics } from "@/components/TrendAnalytics";
 
+console.log("Dashboard component is being rendered");
+
 const mockTrends = {
   instagram: [
     { tag: "fashion", growth: 23, posts: 1234567 },
@@ -170,12 +172,18 @@ const mockCreators = {
 };
 
 const Dashboard = () => {
+  console.log("Inside Dashboard component function");
   const [platform, setPlatform] = useState<"instagram" | "tiktok">("instagram");
   const [search, setSearch] = useState("");
+
+  console.log("Current platform:", platform);
+  console.log("Current search:", search);
 
   const filteredTrends = mockTrends[platform].filter((trend) =>
     trend.tag.toLowerCase().includes(search.toLowerCase())
   );
+
+  console.log("Filtered trends:", filteredTrends);
 
   return (
     <div className="container mx-auto px-4 py-8">
