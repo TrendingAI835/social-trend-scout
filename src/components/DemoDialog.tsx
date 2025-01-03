@@ -16,12 +16,17 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
+// Add console logs to check connection status
+console.log('Supabase URL:', supabaseUrl ? 'Found' : 'Missing');
+console.log('Supabase Anon Key:', supabaseAnonKey ? 'Found' : 'Missing');
+
 let supabase: ReturnType<typeof createClient> | null = null;
 
 if (supabaseUrl && supabaseAnonKey) {
   supabase = createClient(supabaseUrl, supabaseAnonKey);
+  console.log('Supabase client initialized successfully');
 } else {
-  console.warn('Supabase configuration is missing. Please connect to Supabase first.');
+  console.warn('Supabase configuration is missing. Please check your connection.');
 }
 
 const demoTrends = [
