@@ -9,6 +9,13 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { TrendingPosts } from "./TrendingPosts";
 import { TrendingTopics } from "./TrendingTopics";
+import { useToast } from "@/components/ui/use-toast";
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(
+  import.meta.env.VITE_SUPABASE_URL,
+  import.meta.env.VITE_SUPABASE_ANON_KEY
+);
 
 const demoTrends = [
   {
@@ -53,6 +60,53 @@ interface DemoDialogProps {
 
 export function DemoDialog({ open, onOpenChange }: DemoDialogProps) {
   const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const handleSubscribe = async () => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session) {
+        toast({
+          title: "Authentication required",
+          description: "Please sign in to subscribe",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-checkout`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${session.access_token}`,
+          },
+        }
+      );
+
+      const { url, error } = await response.json();
+
+      if (error) {
+        toast({
+          title: "Error",
+          description: error,
+          variant: "destructive",
+        });
+        return;
+      }
+
+      if (url) {
+        window.location.href = url;
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to initiate checkout",
+        variant: "destructive",
+      });
+    }
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -78,9 +132,14 @@ export function DemoDialog({ open, onOpenChange }: DemoDialogProps) {
             <Button variant="outline" onClick={() => onOpenChange(false)}>
               Close Demo
             </Button>
-            <Button onClick={() => navigate("/dashboard")}>
-              Access Full Dashboard
-            </Button>
+            <div className="space-x-4">
+              <Button onClick={() => navigate("/dashboard")}>
+                Access Full Dashboard
+              </Button>
+              <Button onClick={handleSubscribe} variant="secondary">
+                Subscribe Now
+              </Button>
+            </div>
           </div>
         </div>
       </DialogContent>
