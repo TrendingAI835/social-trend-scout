@@ -12,10 +12,15 @@ import { TrendingTopics } from "./TrendingTopics";
 import { useToast } from "@/components/ui/use-toast";
 import { createClient } from '@supabase/supabase-js';
 
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_ANON_KEY
-);
+// Initialize Supabase client with proper environment variables
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  console.error('Supabase URL and Anon Key are required');
+}
+
+const supabase = createClient(supabaseUrl || '', supabaseAnonKey || '');
 
 const demoTrends = [
   {
@@ -76,7 +81,7 @@ export function DemoDialog({ open, onOpenChange }: DemoDialogProps) {
       }
 
       const response = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-checkout`,
+        `${supabaseUrl}/functions/v1/create-checkout`,
         {
           method: 'POST',
           headers: {
