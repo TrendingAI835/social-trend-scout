@@ -16,11 +16,13 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  console.error('Supabase URL and Anon Key are required');
-}
+let supabase: ReturnType<typeof createClient> | null = null;
 
-const supabase = createClient(supabaseUrl || '', supabaseAnonKey || '');
+if (supabaseUrl && supabaseAnonKey) {
+  supabase = createClient(supabaseUrl, supabaseAnonKey);
+} else {
+  console.warn('Supabase configuration is missing. Please connect to Supabase first.');
+}
 
 const demoTrends = [
   {
@@ -68,6 +70,15 @@ export function DemoDialog({ open, onOpenChange }: DemoDialogProps) {
   const { toast } = useToast();
 
   const handleSubscribe = async () => {
+    if (!supabase) {
+      toast({
+        title: "Configuration Required",
+        description: "Please connect to Supabase first to enable subscriptions.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
       const { data: { session } } = await supabase.auth.getSession();
       
