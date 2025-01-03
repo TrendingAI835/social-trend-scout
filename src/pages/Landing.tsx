@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
 import { ArrowRight, TrendingUp, Search, Bell } from "lucide-react";
+import { DemoDialog } from "@/components/DemoDialog";
 
 export default function Landing() {
-  const navigate = useNavigate();
+  const [showDemo, setShowDemo] = useState(false);
 
   return (
     <div className="min-h-screen bg-background">
@@ -19,7 +19,7 @@ export default function Landing() {
           </p>
           <Button
             size="lg"
-            onClick={() => navigate("/dashboard")}
+            onClick={() => setShowDemo(true)}
             className="group"
           >
             Get Started
@@ -60,6 +60,8 @@ export default function Landing() {
           </div>
         </div>
       </div>
+
+      <DemoDialog open={showDemo} onOpenChange={setShowDemo} />
     </div>
   );
 }
