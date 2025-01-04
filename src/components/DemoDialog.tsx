@@ -10,24 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { TrendingPosts } from "./TrendingPosts";
 import { TrendingTopics } from "./TrendingTopics";
 import { useToast } from "@/hooks/use-toast";
-import { createClient } from '@supabase/supabase-js';
-
-// Initialize Supabase client with proper environment variables
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-
-// Add console logs to check connection status
-console.log('Supabase URL:', supabaseUrl ? 'Found' : 'Missing');
-console.log('Supabase Anon Key:', supabaseAnonKey ? 'Found' : 'Missing');
-
-let supabase: ReturnType<typeof createClient> | null = null;
-
-if (supabaseUrl && supabaseAnonKey) {
-  supabase = createClient(supabaseUrl, supabaseAnonKey);
-  console.log('Supabase client initialized successfully');
-} else {
-  console.warn('Supabase configuration is missing. Please check your connection.');
-}
+import { supabase } from "@/integrations/supabase/client";
 
 const demoTrends = [
   {
@@ -75,15 +58,6 @@ export function DemoDialog({ open, onOpenChange }: DemoDialogProps) {
   const { toast } = useToast();
 
   const handleSubscribe = async () => {
-    if (!supabase) {
-      toast({
-        title: "Configuration Required",
-        description: "Please connect to Supabase first to enable subscriptions.",
-        variant: "destructive",
-      });
-      return;
-    }
-
     try {
       const { data: { session } } = await supabase.auth.getSession();
       
