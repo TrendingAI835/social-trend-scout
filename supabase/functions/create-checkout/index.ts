@@ -37,7 +37,7 @@ serve(async (req) => {
       limit: 1
     })
 
-    const price_id = "price_1QdK7hR8nN0kBkgp4VfHL5hg"
+    const price_id = "price_1QdK7hR8nN0kBkgp4VfHL5hg" // Replace this with your actual price ID
 
     let customer_id = undefined
     if (customers.data.length > 0) {
@@ -54,6 +54,7 @@ serve(async (req) => {
       }
     }
 
+    console.log('Creating payment session...')
     const session = await stripe.checkout.sessions.create({
       customer: customer_id,
       customer_email: customer_id ? undefined : email,
@@ -68,6 +69,7 @@ serve(async (req) => {
       cancel_url: `${req.headers.get('origin')}/`,
     })
 
+    console.log('Payment session created:', session.id)
     return new Response(
       JSON.stringify({ url: session.url }),
       { 
@@ -76,6 +78,7 @@ serve(async (req) => {
       }
     )
   } catch (error) {
+    console.error('Error creating payment session:', error)
     return new Response(
       JSON.stringify({ error: error.message }),
       { 

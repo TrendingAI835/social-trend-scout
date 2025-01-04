@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { TrendingPosts } from "./TrendingPosts";
 import { TrendingTopics } from "./TrendingTopics";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { createClient } from '@supabase/supabase-js';
 
 // Initialize Supabase client with proper environment variables
@@ -96,27 +96,22 @@ export function DemoDialog({ open, onOpenChange }: DemoDialogProps) {
         return;
       }
 
-      const response = await fetch(
-        `${supabaseUrl}/functions/v1/create-checkout`,
-        {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${session.access_token}`,
-          },
-        }
-      );
+      const response = await supabase.functions.invoke('create-checkout', {
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+        },
+      });
 
-      const { url, error } = await response.json();
-
-      if (error) {
+      if (response.error) {
         toast({
           title: "Error",
-          description: error,
+          description: response.error.message,
           variant: "destructive",
         });
         return;
       }
 
+      const { data: { url } } = response;
       if (url) {
         window.location.href = url;
       }
@@ -126,6 +121,7 @@ export function DemoDialog({ open, onOpenChange }: DemoDialogProps) {
         description: "Failed to initiate checkout",
         variant: "destructive",
       });
+      console.error('Checkout error:', error);
     }
   };
 
