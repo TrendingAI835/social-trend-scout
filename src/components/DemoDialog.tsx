@@ -11,6 +11,9 @@ import { TrendingPosts } from "./TrendingPosts";
 import { TrendingTopics } from "./TrendingTopics";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { Auth } from "@supabase/auth-ui-react";
+import { ThemeSupa } from "@supabase/auth-ui-shared";
+import { useState } from "react";
 
 const demoTrends = [
   {
@@ -56,17 +59,14 @@ interface DemoDialogProps {
 export function DemoDialog({ open, onOpenChange }: DemoDialogProps) {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [showAuth, setShowAuth] = useState(false);
 
   const handleSubscribe = async () => {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       
       if (!session) {
-        toast({
-          title: "Authentication required",
-          description: "Please sign in to subscribe",
-          variant: "destructive",
-        });
+        setShowAuth(true);
         return;
       }
 
@@ -98,6 +98,28 @@ export function DemoDialog({ open, onOpenChange }: DemoDialogProps) {
       console.error('Checkout error:', error);
     }
   };
+
+  if (showAuth) {
+    return (
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Sign in to Subscribe</DialogTitle>
+            <DialogDescription>
+              Please sign in or create an account to continue with your subscription
+            </DialogDescription>
+          </DialogHeader>
+          <Auth 
+            supabaseClient={supabase}
+            appearance={{ theme: ThemeSupa }}
+            providers={[]}
+            onlyThirdPartyProviders={false}
+            redirectTo={window.location.origin}
+          />
+        </DialogContent>
+      </Dialog>
+    );
+  }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
