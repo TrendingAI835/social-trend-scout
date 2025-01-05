@@ -99,6 +99,10 @@ export function DemoDialog({ open, onOpenChange }: DemoDialogProps) {
     }
   };
 
+  const handleBack = () => {
+    setShowAuth(false);
+  };
+
   if (showAuth) {
     return (
       <Dialog open={open} onOpenChange={onOpenChange}>
@@ -109,13 +113,18 @@ export function DemoDialog({ open, onOpenChange }: DemoDialogProps) {
               Please sign in or create an account to continue with your subscription
             </DialogDescription>
           </DialogHeader>
-          <Auth 
-            supabaseClient={supabase}
-            appearance={{ theme: ThemeSupa }}
-            providers={[]}
-            onlyThirdPartyProviders={false}
-            redirectTo={window.location.origin}
-          />
+          <div className="space-y-4">
+            <Auth 
+              supabaseClient={supabase}
+              appearance={{ theme: ThemeSupa }}
+              providers={[]}
+              onlyThirdPartyProviders={false}
+              redirectTo={window.location.origin}
+            />
+            <Button variant="outline" onClick={handleBack} className="w-full">
+              Back to Demo
+            </Button>
+          </div>
         </DialogContent>
       </Dialog>
     );
