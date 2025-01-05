@@ -1,5 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { TrendingUp, Users, MessageCircle, Share2 } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface Creator {
   username: string;
@@ -16,39 +17,68 @@ interface CreatorAnalyticsProps {
 }
 
 export const CreatorAnalytics = ({ creators }: CreatorAnalyticsProps) => {
+  const getInitials = (username: string) => {
+    return username.slice(0, 2).toUpperCase();
+  };
+
   return (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold">Top Creators</h2>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {creators.map((creator) => (
-          <Card key={creator.username} className="trend-card trend-animation">
-            <div className="space-y-4">
-              <div className="flex items-start justify-between">
-                <div>
-                  <h3 className="text-lg font-semibold">@{creator.username}</h3>
-                  <p className="text-sm text-muted-foreground">{creator.followers.toLocaleString()} followers</p>
-                </div>
-                <div className="flex items-center gap-1 text-emerald-400">
-                  <TrendingUp className="h-4 w-4" />
-                  <span className="text-sm font-medium">+{creator.engagement}%</span>
-                </div>
+          <Card 
+            key={creator.username} 
+            className="trend-card trend-animation overflow-visible"
+            style={{
+              background: "linear-gradient(135deg, #9b87f5 0%, #7E69AB 100%)",
+              border: "3px solid #D6BCFA"
+            }}
+          >
+            <div className="relative pt-12 pb-4 px-4">
+              {/* Profile Picture */}
+              <div className="absolute -top-8 left-1/2 transform -translate-x-1/2">
+                <Avatar className="h-24 w-24 border-4 border-[#D6BCFA] shadow-xl">
+                  <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${creator.username}`} />
+                  <AvatarFallback className="bg-[#1A1F2C] text-white text-xl">
+                    {getInitials(creator.username)}
+                  </AvatarFallback>
+                </Avatar>
               </div>
-              
-              <div className="grid grid-cols-3 gap-2 text-sm">
-                <div className="flex flex-col items-center p-2 rounded-lg bg-secondary/50">
-                  <Users className="h-4 w-4 mb-1" />
-                  <span>{(creator.avgLikes / 1000).toFixed(1)}k</span>
-                  <span className="text-xs text-muted-foreground">Likes</span>
+
+              {/* Creator Info */}
+              <div className="text-center mb-4 mt-2">
+                <h3 className="text-xl font-bold text-white">@{creator.username}</h3>
+                <div className="flex items-center justify-center gap-2 text-[#D6BCFA]">
+                  <TrendingUp className="h-4 w-4" />
+                  <span className="font-medium">+{creator.engagement}% Engagement</span>
                 </div>
-                <div className="flex flex-col items-center p-2 rounded-lg bg-secondary/50">
-                  <MessageCircle className="h-4 w-4 mb-1" />
-                  <span>{(creator.avgComments / 1000).toFixed(1)}k</span>
-                  <span className="text-xs text-muted-foreground">Comments</span>
+                <p className="text-[#D6BCFA] mt-1">
+                  {creator.followers.toLocaleString()} followers
+                </p>
+              </div>
+
+              {/* Stats Grid */}
+              <div className="grid grid-cols-3 gap-2 bg-[#1A1F2C]/20 rounded-lg p-3 backdrop-blur-sm">
+                <div className="flex flex-col items-center p-2 rounded-lg bg-[#1A1F2C]/40">
+                  <Users className="h-5 w-5 mb-1 text-[#D6BCFA]" />
+                  <span className="text-white font-bold">
+                    {(creator.avgLikes / 1000).toFixed(1)}k
+                  </span>
+                  <span className="text-xs text-[#D6BCFA]">Likes</span>
                 </div>
-                <div className="flex flex-col items-center p-2 rounded-lg bg-secondary/50">
-                  <Share2 className="h-4 w-4 mb-1" />
-                  <span>{(creator.avgShares / 1000).toFixed(1)}k</span>
-                  <span className="text-xs text-muted-foreground">Shares</span>
+                <div className="flex flex-col items-center p-2 rounded-lg bg-[#1A1F2C]/40">
+                  <MessageCircle className="h-5 w-5 mb-1 text-[#D6BCFA]" />
+                  <span className="text-white font-bold">
+                    {(creator.avgComments / 1000).toFixed(1)}k
+                  </span>
+                  <span className="text-xs text-[#D6BCFA]">Comments</span>
+                </div>
+                <div className="flex flex-col items-center p-2 rounded-lg bg-[#1A1F2C]/40">
+                  <Share2 className="h-5 w-5 mb-1 text-[#D6BCFA]" />
+                  <span className="text-white font-bold">
+                    {(creator.avgShares / 1000).toFixed(1)}k
+                  </span>
+                  <span className="text-xs text-[#D6BCFA]">Shares</span>
                 </div>
               </div>
             </div>
