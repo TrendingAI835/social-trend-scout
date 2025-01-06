@@ -34,7 +34,7 @@ export const CreatorAnalytics = ({ creators }: CreatorAnalyticsProps) => {
   return (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold">Top Creators</h2>
-      <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
+      <div className="grid grid-cols-2 gap-6">
         {creators.map((creator) => (
           <Card 
             key={creator.username} 
