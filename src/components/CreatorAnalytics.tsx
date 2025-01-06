@@ -27,7 +27,6 @@ export const CreatorAnalytics = ({ creators }: CreatorAnalyticsProps) => {
   };
 
   const calculateLikesPerView = (creator: Creator) => {
-    // Assuming average views per post is 3x the follower count for this example
     const avgViews = creator.followers * 3;
     return ((creator.avgLikes / avgViews) * 100).toFixed(1);
   };
@@ -46,7 +45,6 @@ export const CreatorAnalytics = ({ creators }: CreatorAnalyticsProps) => {
             }}
           >
             <div className="relative pt-12 pb-4 px-4">
-              {/* Profile Picture */}
               <div className="absolute -top-8 left-1/2 transform -translate-x-1/2">
                 <Avatar className="h-24 w-24 border-4 border-[#D6BCFA] shadow-xl">
                   <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${creator.username}`} />
@@ -56,7 +54,6 @@ export const CreatorAnalytics = ({ creators }: CreatorAnalyticsProps) => {
                 </Avatar>
               </div>
 
-              {/* Creator Info */}
               <div className="text-center mb-6 mt-2">
                 <h3 className="text-xl font-bold text-white">@{creator.username}</h3>
                 <div className="flex items-center justify-center gap-2 text-[#D6BCFA]">
@@ -68,23 +65,19 @@ export const CreatorAnalytics = ({ creators }: CreatorAnalyticsProps) => {
                 </p>
               </div>
 
-              {/* Stats Grid */}
               <div className="grid grid-cols-3 gap-2 bg-[#1A1F2C]/20 rounded-lg p-3 backdrop-blur-sm">
-                {/* Engagement Rate */}
                 <div className="flex flex-col items-center p-2 rounded-lg bg-[#1A1F2C]/40">
                   <TrendingUp className="h-5 w-5 mb-1 text-[#D6BCFA]" />
                   <span className="text-white font-bold">{calculateEngagementRate(creator)}%</span>
                   <span className="text-xs text-[#D6BCFA]">Engagement</span>
                 </div>
 
-                {/* Average View Duration */}
                 <div className="flex flex-col items-center p-2 rounded-lg bg-[#1A1F2C]/40">
                   <Clock className="h-5 w-5 mb-1 text-[#D6BCFA]" />
                   <span className="text-white font-bold">2.5m</span>
                   <span className="text-xs text-[#D6BCFA]">Avg Duration</span>
                 </div>
 
-                {/* Views */}
                 <div className="flex flex-col items-center p-2 rounded-lg bg-[#1A1F2C]/40">
                   <Eye className="h-5 w-5 mb-1 text-[#D6BCFA]" />
                   <span className="text-white font-bold">
@@ -93,14 +86,12 @@ export const CreatorAnalytics = ({ creators }: CreatorAnalyticsProps) => {
                   <span className="text-xs text-[#D6BCFA]">Views/Post</span>
                 </div>
 
-                {/* Likes per View */}
                 <div className="flex flex-col items-center p-2 rounded-lg bg-[#1A1F2C]/40">
                   <Heart className="h-5 w-5 mb-1 text-[#D6BCFA]" />
                   <span className="text-white font-bold">{calculateLikesPerView(creator)}%</span>
                   <span className="text-xs text-[#D6BCFA]">Likes/View</span>
                 </div>
 
-                {/* Comments per Post */}
                 <div className="flex flex-col items-center p-2 rounded-lg bg-[#1A1F2C]/40">
                   <MessageCircle className="h-5 w-5 mb-1 text-[#D6BCFA]" />
                   <span className="text-white font-bold">
@@ -109,7 +100,6 @@ export const CreatorAnalytics = ({ creators }: CreatorAnalyticsProps) => {
                   <span className="text-xs text-[#D6BCFA]">Comments</span>
                 </div>
 
-                {/* Shares per Post */}
                 <div className="flex flex-col items-center p-2 rounded-lg bg-[#1A1F2C]/40">
                   <Share2 className="h-5 w-5 mb-1 text-[#D6BCFA]" />
                   <span className="text-white font-bold">
