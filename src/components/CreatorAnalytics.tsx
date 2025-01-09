@@ -34,7 +34,7 @@ export const CreatorAnalytics = ({ creators }: CreatorAnalyticsProps) => {
   return (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold">Top Creators</h2>
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid grid-cols-3 gap-6">
         {creators.map((creator) => (
           <Card 
             key={creator.username} 
@@ -65,7 +65,7 @@ export const CreatorAnalytics = ({ creators }: CreatorAnalyticsProps) => {
                 </p>
               </div>
 
-              <div className="grid grid-cols-3 grid-rows-2 gap-2 bg-[#1A1F2C]/20 rounded-lg p-3 backdrop-blur-sm">
+              <div className="grid grid-cols-2 grid-rows-3 gap-2 bg-[#1A1F2C]/20 rounded-lg p-3 backdrop-blur-sm">
                 <div className="flex flex-col items-center p-2 rounded-lg bg-[#1A1F2C]/40">
                   <TrendingUp className="h-5 w-5 mb-1 text-[#D6BCFA]" />
                   <span className="text-white font-bold">{calculateEngagementRate(creator)}%</span>
