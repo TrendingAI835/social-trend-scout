@@ -14,6 +14,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { useState } from "react";
+import { SurveyForm } from "./SurveyForm";
+import { PricingOptions } from "./PricingOptions";
 
 const demoTrends = [
   {
@@ -56,21 +58,25 @@ interface DemoDialogProps {
   onOpenChange: (open: boolean) => void;
 }
 
+type Step = "demo" | "survey" | "pricing" | "auth";
+
 export function DemoDialog({ open, onOpenChange }: DemoDialogProps) {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [showAuth, setShowAuth] = useState(false);
+  const [step, setStep] = useState<Step>("demo");
+  const [surveyData, setSurveyData] = useState<any>(null);
 
-  const handleSubscribe = async () => {
+  const handleSubscribe = async (planId: string) => {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       
       if (!session) {
-        setShowAuth(true);
+        setStep("auth");
         return;
       }
 
       const response = await supabase.functions.invoke('create-checkout', {
+        body: { planId },
         headers: {
           Authorization: `Bearer ${session.access_token}`,
         },
@@ -99,16 +105,27 @@ export function DemoDialog({ open, onOpenChange }: DemoDialogProps) {
     }
   };
 
-  const handleBack = () => {
-    setShowAuth(false);
+  const handleSurveyComplete = (data: any) => {
+    setSurveyData(data);
+    setStep("pricing");
   };
 
-  if (showAuth) {
+  const handleContinue = () => {
+    setStep("survey");
+  };
+
+  const handleBack = () => {
+    if (step === "survey") setStep("demo");
+    if (step === "pricing") setStep("survey");
+    if (step === "auth") setStep("pricing");
+  };
+
+  if (step === "auth") {
     return (
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle>Sign in to Subscribe</DialogTitle>
+            <DialogTitle>Sign in to Continue</DialogTitle>
             <DialogDescription>
               Please sign in or create an account to continue with your subscription
             </DialogDescription>
@@ -122,7 +139,7 @@ export function DemoDialog({ open, onOpenChange }: DemoDialogProps) {
               redirectTo={window.location.origin}
             />
             <Button variant="outline" onClick={handleBack} className="w-full">
-              Back to Demo
+              Back
             </Button>
           </div>
         </DialogContent>
@@ -134,34 +151,50 @@ export function DemoDialog({ open, onOpenChange }: DemoDialogProps) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Experience TrendingAI in Action</DialogTitle>
+          <DialogTitle>
+            {step === "demo" && "Experience TrendingAI in Action"}
+            {step === "survey" && "Tell Us About Your Needs"}
+            {step === "pricing" && "Choose Your Plan"}
+          </DialogTitle>
           <DialogDescription>
-            Get real-time insights into social media trends and engagement metrics
+            {step === "demo" && "Get real-time insights into social media trends and engagement metrics"}
+            {step === "survey" && "Help us understand how we can best serve your needs"}
+            {step === "pricing" && "Select the plan that best fits your requirements"}
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-8 py-4">
-          <section>
-            <h3 className="text-xl font-semibold mb-4">Trending Topics</h3>
-            <TrendingTopics trends={demoTrends} />
-          </section>
+          {step === "demo" && (
+            <>
+              <section>
+                <h3 className="text-xl font-semibold mb-4">Trending Topics</h3>
+                <TrendingTopics trends={demoTrends} />
+              </section>
 
-          <section>
-            <TrendingPosts posts={demoPosts} />
-          </section>
+              <section>
+                <TrendingPosts posts={demoPosts} />
+              </section>
+            </>
+          )}
+
+          {step === "survey" && <SurveyForm onComplete={handleSurveyComplete} />}
+          
+          {step === "pricing" && <PricingOptions onSelect={handleSubscribe} />}
 
           <div className="flex justify-between items-center pt-4 border-t">
-            <Button variant="outline" onClick={() => onOpenChange(false)}>
-              Close Demo
+            <Button variant="outline" onClick={step === "demo" ? () => onOpenChange(false) : handleBack}>
+              {step === "demo" ? "Close" : "Back"}
             </Button>
-            <div className="space-x-4">
-              <Button onClick={() => navigate("/dashboard")}>
-                Access Full Dashboard
-              </Button>
-              <Button onClick={handleSubscribe} variant="secondary">
-                Subscribe Now
-              </Button>
-            </div>
+            {step === "demo" && (
+              <div className="space-x-4">
+                <Button onClick={() => navigate("/dashboard")}>
+                  Access Full Dashboard
+                </Button>
+                <Button onClick={handleContinue} variant="secondary">
+                  Continue
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </DialogContent>
