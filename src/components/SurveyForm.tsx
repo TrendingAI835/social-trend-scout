@@ -5,6 +5,7 @@ import { Form, FormField, FormItem, FormLabel, FormControl } from "@/components/
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import { useState } from "react";
 
 const surveySchema = z.object({
   useCase: z.enum(["business", "personal", "agency"]),
@@ -19,113 +20,121 @@ interface SurveyFormProps {
 }
 
 export function SurveyForm({ onComplete }: SurveyFormProps) {
+  const [currentStep, setCurrentStep] = useState<keyof SurveyData>("useCase");
+  
   const form = useForm<SurveyData>({
     resolver: zodResolver(surveySchema),
-    defaultValues: {
-      useCase: "business",
-      platform: "all",
-      experience: "beginner",
-    },
   });
+
+  const handleNext = (nextStep: keyof SurveyData) => {
+    const currentValue = form.getValues(currentStep);
+    if (!currentValue) {
+      form.setError(currentStep, {
+        type: "required",
+        message: "Please select an option",
+      });
+      return;
+    }
+    setCurrentStep(nextStep);
+  };
+
+  const handleSubmit = (data: SurveyData) => {
+    if (!data[currentStep]) {
+      form.setError(currentStep, {
+        type: "required",
+        message: "Please select an option",
+      });
+      return;
+    }
+    onComplete(data);
+  };
+
+  const questions = {
+    useCase: {
+      label: "How do you plan to use TrendingAI?",
+      options: [
+        { value: "business", label: "For my business" },
+        { value: "personal", label: "Personal brand growth" },
+        { value: "agency", label: "Agency / Multiple clients" },
+      ],
+      next: "platform" as const,
+    },
+    platform: {
+      label: "Which platforms are you most interested in?",
+      options: [
+        { value: "all", label: "All platforms" },
+        { value: "tiktok", label: "TikTok" },
+        { value: "instagram", label: "Instagram" },
+        { value: "youtube", label: "YouTube" },
+      ],
+      next: "experience" as const,
+    },
+    experience: {
+      label: "What's your experience level with social media analytics?",
+      options: [
+        { value: "beginner", label: "Beginner" },
+        { value: "intermediate", label: "Intermediate" },
+        { value: "expert", label: "Expert" },
+      ],
+    },
+  };
+
+  const currentQuestion = questions[currentStep];
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onComplete)} className="space-y-6">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
         <FormField
           control={form.control}
-          name="useCase"
+          name={currentStep}
           render={({ field }) => (
             <FormItem className="space-y-3">
-              <FormLabel>How do you plan to use TrendingAI?</FormLabel>
+              <FormLabel>{currentQuestion.label}</FormLabel>
               <FormControl>
                 <RadioGroup
                   onValueChange={field.onChange}
-                  defaultValue={field.value}
-                  className="flex flex-col space-y-1"
+                  className="flex flex-col space-y-3"
                 >
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="business" id="business" />
-                    <Label htmlFor="business">For my business</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="personal" id="personal" />
-                    <Label htmlFor="personal">Personal brand growth</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="agency" id="agency" />
-                    <Label htmlFor="agency">Agency / Multiple clients</Label>
-                  </div>
+                  {currentQuestion.options.map((option) => (
+                    <div key={option.value} className="flex items-center space-x-2">
+                      <RadioGroupItem value={option.value} id={option.value} />
+                      <Label htmlFor={option.value}>{option.label}</Label>
+                    </div>
+                  ))}
                 </RadioGroup>
               </FormControl>
             </FormItem>
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="platform"
-          render={({ field }) => (
-            <FormItem className="space-y-3">
-              <FormLabel>Which platforms are you most interested in?</FormLabel>
-              <FormControl>
-                <RadioGroup
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                  className="flex flex-col space-y-1"
-                >
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="all" id="all-platforms" />
-                    <Label htmlFor="all-platforms">All platforms</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="tiktok" id="tiktok" />
-                    <Label htmlFor="tiktok">TikTok</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="instagram" id="instagram" />
-                    <Label htmlFor="instagram">Instagram</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="youtube" id="youtube" />
-                    <Label htmlFor="youtube">YouTube</Label>
-                  </div>
-                </RadioGroup>
-              </FormControl>
-            </FormItem>
+        <div className="flex justify-between">
+          {currentStep !== "useCase" && (
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => {
+                const steps: (keyof SurveyData)[] = ["useCase", "platform", "experience"];
+                const currentIndex = steps.indexOf(currentStep);
+                setCurrentStep(steps[currentIndex - 1]);
+              }}
+            >
+              Previous
+            </Button>
           )}
-        />
-
-        <FormField
-          control={form.control}
-          name="experience"
-          render={({ field }) => (
-            <FormItem className="space-y-3">
-              <FormLabel>What's your experience level with social media analytics?</FormLabel>
-              <FormControl>
-                <RadioGroup
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                  className="flex flex-col space-y-1"
-                >
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="beginner" id="beginner" />
-                    <Label htmlFor="beginner">Beginner</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="intermediate" id="intermediate" />
-                    <Label htmlFor="intermediate">Intermediate</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="expert" id="expert" />
-                    <Label htmlFor="expert">Expert</Label>
-                  </div>
-                </RadioGroup>
-              </FormControl>
-            </FormItem>
-          )}
-        />
-
-        <Button type="submit" className="w-full">Continue</Button>
+          
+          <Button
+            type="button"
+            onClick={() => {
+              if (currentQuestion.next) {
+                handleNext(currentQuestion.next);
+              } else {
+                form.handleSubmit(handleSubmit)();
+              }
+            }}
+          >
+            {currentQuestion.next ? "Next" : "Complete"}
+          </Button>
+        </div>
       </form>
     </Form>
   );
