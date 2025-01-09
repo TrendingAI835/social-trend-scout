@@ -19,6 +19,16 @@ interface SurveyFormProps {
   onComplete: (data: SurveyData) => void;
 }
 
+type QuestionConfig = {
+  label: string;
+  options: { value: string; label: string; }[];
+  next?: keyof SurveyData;
+};
+
+type Questions = {
+  [K in keyof SurveyData]: QuestionConfig;
+};
+
 export function SurveyForm({ onComplete }: SurveyFormProps) {
   const [currentStep, setCurrentStep] = useState<keyof SurveyData>("useCase");
   
@@ -49,7 +59,7 @@ export function SurveyForm({ onComplete }: SurveyFormProps) {
     onComplete(data);
   };
 
-  const questions = {
+  const questions: Questions = {
     useCase: {
       label: "How do you plan to use TrendingAI?",
       options: [
@@ -57,7 +67,7 @@ export function SurveyForm({ onComplete }: SurveyFormProps) {
         { value: "personal", label: "Personal brand growth" },
         { value: "agency", label: "Agency / Multiple clients" },
       ],
-      next: "platform" as const,
+      next: "platform",
     },
     platform: {
       label: "Which platforms are you most interested in?",
@@ -67,7 +77,7 @@ export function SurveyForm({ onComplete }: SurveyFormProps) {
         { value: "instagram", label: "Instagram" },
         { value: "youtube", label: "YouTube" },
       ],
-      next: "experience" as const,
+      next: "experience",
     },
     experience: {
       label: "What's your experience level with social media analytics?",
