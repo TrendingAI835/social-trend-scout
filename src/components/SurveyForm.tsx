@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const surveySchema = z.object({
   useCase: z.enum(["business", "personal", "agency"]),
@@ -21,7 +22,7 @@ interface SurveyFormProps {
 
 type QuestionConfig = {
   label: string;
-  options: { value: string; label: string; }[];
+  options: { value: string; label: string; icon?: string }[];
   next?: keyof SurveyData;
 };
 
@@ -93,31 +94,61 @@ export function SurveyForm({ onComplete }: SurveyFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
-        <FormField
-          control={form.control}
-          name={currentStep}
-          render={({ field }) => (
-            <FormItem className="space-y-3">
-              <FormLabel>{currentQuestion.label}</FormLabel>
-              <FormControl>
-                <RadioGroup
-                  onValueChange={field.onChange}
-                  className="flex flex-col space-y-3"
-                >
-                  {currentQuestion.options.map((option) => (
-                    <div key={option.value} className="flex items-center space-x-2">
-                      <RadioGroupItem value={option.value} id={option.value} />
-                      <Label htmlFor={option.value}>{option.label}</Label>
-                    </div>
-                  ))}
-                </RadioGroup>
-              </FormControl>
-            </FormItem>
-          )}
-        />
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentStep}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.3 }}
+          >
+            <FormField
+              control={form.control}
+              name={currentStep}
+              render={({ field }) => (
+                <FormItem className="space-y-6">
+                  <FormLabel className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                    {currentQuestion.label}
+                  </FormLabel>
+                  <FormControl>
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      className="grid grid-cols-1 gap-4"
+                    >
+                      {currentQuestion.options.map((option) => (
+                        <motion.div
+                          key={option.value}
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                        >
+                          <label
+                            htmlFor={option.value}
+                            className="flex items-center space-x-4 p-4 rounded-lg border-2 border-muted cursor-pointer transition-all duration-200 hover:border-primary hover:bg-primary/5"
+                          >
+                            <RadioGroupItem value={option.value} id={option.value} />
+                            <div className="flex-1">
+                              <Label htmlFor={option.value} className="text-lg font-medium">
+                                {option.label}
+                              </Label>
+                            </div>
+                          </label>
+                        </motion.div>
+                      ))}
+                    </RadioGroup>
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+          </motion.div>
+        </AnimatePresence>
 
-        <div className="flex justify-between">
+        <motion.div 
+          className="flex justify-between pt-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+        >
           {currentStep !== "useCase" && (
             <Button
               type="button"
@@ -127,6 +158,7 @@ export function SurveyForm({ onComplete }: SurveyFormProps) {
                 const currentIndex = steps.indexOf(currentStep);
                 setCurrentStep(steps[currentIndex - 1]);
               }}
+              className="hover:scale-105 transition-transform"
             >
               Previous
             </Button>
@@ -141,10 +173,11 @@ export function SurveyForm({ onComplete }: SurveyFormProps) {
                 form.handleSubmit(handleSubmit)();
               }
             }}
+            className="ml-auto bg-gradient-to-r from-primary to-accent hover:opacity-90 hover:scale-105 transition-all"
           >
             {currentQuestion.next ? "Next" : "Complete"}
           </Button>
-        </div>
+        </motion.div>
       </form>
     </Form>
   );
