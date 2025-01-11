@@ -63,15 +63,22 @@ export default function Landing() {
             <div
               key={feature.title}
               className="trend-card p-6 cursor-pointer transition-all hover:scale-105"
-              onClick={() => setSelectedFeature(feature)}
             >
               <div className="mb-4 p-3 bg-primary/10 w-fit rounded-lg">
                 {feature.icon}
               </div>
               <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-              <p className="text-muted-foreground">
+              <p className="text-muted-foreground mb-4">
                 {feature.description}
               </p>
+              <Button 
+                variant="secondary"
+                className="w-full group"
+                onClick={() => setSelectedFeature(feature)}
+              >
+                Get Started
+                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Button>
             </div>
           ))}
         </div>
