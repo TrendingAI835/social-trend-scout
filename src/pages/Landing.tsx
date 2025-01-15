@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, TrendingUp, Search, Bell } from "lucide-react";
 import { DemoDialog } from "@/components/DemoDialog";
 import { FeatureDialog } from "@/components/FeatureDialog";
+import Footer from "@/components/Footer";
 
 interface Feature {
   icon: React.ReactNode;
@@ -37,8 +38,8 @@ export default function Landing() {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-16">
+    <div className="min-h-screen bg-background flex flex-col">
+      <div className="flex-grow container mx-auto px-4 py-16">
         {/* Hero Section */}
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
@@ -76,6 +77,8 @@ export default function Landing() {
           ))}
         </div>
       </div>
+
+      <Footer />
 
       <DemoDialog open={showDemo} onOpenChange={setShowDemo} />
       
