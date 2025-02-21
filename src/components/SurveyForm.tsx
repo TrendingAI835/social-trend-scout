@@ -1,4 +1,3 @@
-
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -15,7 +14,7 @@ const surveySchema = z.object({
   growthKnowledge: z.enum(["no_idea", "struggle", "need_to_start"]),
   researchTime: z.enum(["less_than_1", "one_to_three", "three_to_five", "more_than_5"]),
   predictValue: z.enum(["game_changer", "drastically", "somewhat"]),
-  platform: z.enum(["tiktok", "instagram", "youtube", "twitter"])
+  platform: z.enum(["tiktok", "instagram", "youtube", "all_platforms"])
 });
 
 type SurveyData = z.infer<typeof surveySchema>;
@@ -93,9 +92,9 @@ export function SurveyForm({ onComplete }: SurveyFormProps) {
       label: "Which platform do you create the most content on?",
       options: [
         { value: "tiktok", label: "TikTok" },
-        { value: "instagram", label: "Instagram Reels" },
-        { value: "youtube", label: "YouTube Shorts" },
-        { value: "twitter", label: "Twitter/X" }
+        { value: "instagram", label: "Instagram" },
+        { value: "youtube", label: "YouTube" },
+        { value: "all_platforms", label: "All Platforms" }
       ]
     }
   };
