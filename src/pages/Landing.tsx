@@ -47,13 +47,13 @@ export default function Landing() {
           className="text-center mb-16"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.4 }}
         >
           <motion.h1 
             className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
-            initial={{ scale: 0.9 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
           >
             Social Trend Scout
           </motion.h1>
@@ -61,14 +61,14 @@ export default function Landing() {
             className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
+            transition={{ duration: 0.3, delay: 0.2 }}
           >
             Discover trending content, track engagement metrics, and stay ahead of social media trends with powerful analytics.
           </motion.p>
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
+            transition={{ duration: 0.3, delay: 0.3 }}
           >
             <Button
               size="lg"
@@ -83,7 +83,7 @@ export default function Landing() {
                 className="absolute inset-0 bg-accent"
                 initial={{ x: "100%" }}
                 whileHover={{ x: 0 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.2 }}
               />
             </Button>
           </motion.div>
@@ -92,27 +92,31 @@ export default function Landing() {
         {/* Features Grid */}
         <motion.div 
           className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto"
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
         >
           {features.map((feature, index) => (
             <motion.div
               key={feature.title}
-              className="trend-card p-6 cursor-pointer transition-all hover:scale-105"
+              className="trend-card p-6 cursor-pointer will-change-transform"
               onClick={() => setSelectedFeature(feature)}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 * (index + 1) }}
+              transition={{ 
+                duration: 0.3,
+                delay: 0.1 * (index + 1),
+                ease: "easeOut"
+              }}
               whileHover={{ 
                 y: -5,
-                boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1)"
+                transition: { duration: 0.2 }
               }}
             >
               <motion.div 
-                className="mb-4 p-3 bg-primary/10 w-fit rounded-lg"
-                whileHover={{ rotate: 360 }}
-                transition={{ duration: 0.6 }}
+                className="mb-4 p-3 bg-primary/10 w-fit rounded-lg will-change-transform"
+                whileHover={{ rotate: 180 }}
+                transition={{ duration: 0.3 }}
               >
                 {feature.icon}
               </motion.div>
