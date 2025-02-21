@@ -1,9 +1,11 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, TrendingUp, Search, Bell } from "lucide-react";
 import { DemoDialog } from "@/components/DemoDialog";
 import { FeatureDialog } from "@/components/FeatureDialog";
 import Footer from "@/components/Footer";
+import { motion } from "framer-motion";
 
 interface Feature {
   icon: React.ReactNode;
@@ -41,41 +43,86 @@ export default function Landing() {
     <div className="min-h-screen bg-background flex flex-col">
       <div className="flex-grow container mx-auto px-4 py-16">
         {/* Hero Section */}
-        <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            Social Trend Scout
-          </h1>
-          <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Discover trending content, track engagement metrics, and stay ahead of social media trends with powerful analytics.
-          </p>
-          <Button
-            size="lg"
-            onClick={() => setShowDemo(true)}
-            className="group"
+        <motion.div 
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <motion.h1 
+            className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
+            initial={{ scale: 0.9 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
           >
-            Get Started
-            <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-          </Button>
-        </div>
+            Social Trend Scout
+          </motion.h1>
+          <motion.p 
+            className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+          >
+            Discover trending content, track engagement metrics, and stay ahead of social media trends with powerful analytics.
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.6 }}
+          >
+            <Button
+              size="lg"
+              onClick={() => setShowDemo(true)}
+              className="group relative overflow-hidden"
+            >
+              <span className="relative z-10">
+                Get Started
+                <ArrowRight className="ml-2 h-4 w-4 inline-block transition-transform group-hover:translate-x-1" />
+              </span>
+              <motion.div
+                className="absolute inset-0 bg-accent"
+                initial={{ x: "100%" }}
+                whileHover={{ x: 0 }}
+                transition={{ duration: 0.3 }}
+              />
+            </Button>
+          </motion.div>
+        </motion.div>
 
         {/* Features Grid */}
-        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          {features.map((feature) => (
-            <div
+        <motion.div 
+          className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+        >
+          {features.map((feature, index) => (
+            <motion.div
               key={feature.title}
               className="trend-card p-6 cursor-pointer transition-all hover:scale-105"
               onClick={() => setSelectedFeature(feature)}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 * (index + 1) }}
+              whileHover={{ 
+                y: -5,
+                boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1)"
+              }}
             >
-              <div className="mb-4 p-3 bg-primary/10 w-fit rounded-lg">
+              <motion.div 
+                className="mb-4 p-3 bg-primary/10 w-fit rounded-lg"
+                whileHover={{ rotate: 360 }}
+                transition={{ duration: 0.6 }}
+              >
                 {feature.icon}
-              </div>
+              </motion.div>
               <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
               <p className="text-muted-foreground">
                 {feature.description}
               </p>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
 
       <Footer />
