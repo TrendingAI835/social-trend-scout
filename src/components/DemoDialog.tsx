@@ -91,7 +91,35 @@ export function DemoDialog({ open, onOpenChange }: DemoDialogProps) {
           <div className="space-y-4">
             <Auth 
               supabaseClient={supabase}
-              appearance={{ theme: ThemeSupa }}
+              appearance={{ 
+                theme: ThemeSupa,
+                style: {
+                  input: {
+                    backgroundColor: 'white',
+                    color: 'black',
+                    borderColor: 'hsl(var(--border))',
+                  },
+                  password: {
+                    backgroundColor: 'white', 
+                    color: 'black',
+                    borderColor: 'hsl(var(--border))',
+                  },
+                  // Improve focus state for better visibility
+                  button: {
+                    border: '1px solid transparent',
+                  },
+                },
+                variables: {
+                  default: {
+                    colors: {
+                      brand: 'hsl(var(--primary))',
+                      brandAccent: 'hsl(var(--primary))',
+                      inputBackground: 'white',
+                      inputText: 'black',
+                    }
+                  }
+                }
+              }}
               providers={[]}
               onlyThirdPartyProviders={false}
               redirectTo={window.location.origin}
