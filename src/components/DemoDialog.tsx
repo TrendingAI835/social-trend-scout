@@ -15,6 +15,7 @@ import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { useState } from "react";
 import { SurveyForm } from "./SurveyForm";
 import { PricingOptions } from "./PricingOptions";
+import { Input } from "./ui/input";
 
 interface DemoDialogProps {
   open: boolean;
@@ -28,6 +29,7 @@ export function DemoDialog({ open, onOpenChange }: DemoDialogProps) {
   const { toast } = useToast();
   const [step, setStep] = useState<Step>("survey");
   const [surveyData, setSurveyData] = useState<any>(null);
+  const [inviteCode, setInviteCode] = useState("");
 
   const handleSubscribe = async (planId: string) => {
     try {
@@ -78,6 +80,25 @@ export function DemoDialog({ open, onOpenChange }: DemoDialogProps) {
     if (step === "auth") setStep("pricing");
   };
 
+  const handleSkipPayment = async () => {
+    // Hardcoded invite codes that bypass payment
+    const validInviteCodes = ["BETA2024", "EARLYACCESS", "FOUNDER"];
+    
+    if (validInviteCodes.includes(inviteCode.trim().toUpperCase())) {
+      setStep("auth");
+      toast({
+        title: "Success",
+        description: "Invite code accepted! You can now create an account.",
+      });
+    } else {
+      toast({
+        title: "Invalid Code",
+        description: "The invite code you entered is not valid.",
+        variant: "destructive",
+      });
+    }
+  };
+
   if (step === "auth") {
     return (
       <Dialog open={open} onOpenChange={onOpenChange}>
@@ -99,12 +120,6 @@ export function DemoDialog({ open, onOpenChange }: DemoDialogProps) {
                     color: 'black',
                     borderColor: 'hsl(var(--border))',
                   },
-                  password: {
-                    backgroundColor: 'white', 
-                    color: 'black',
-                    borderColor: 'hsl(var(--border))',
-                  },
-                  // Improve focus state for better visibility
                   button: {
                     border: '1px solid transparent',
                   },
@@ -150,7 +165,27 @@ export function DemoDialog({ open, onOpenChange }: DemoDialogProps) {
         <div className="space-y-8 py-4">
           {step === "survey" && <SurveyForm onComplete={handleSurveyComplete} />}
           
-          {step === "pricing" && <PricingOptions onSelect={handleSubscribe} />}
+          {step === "pricing" && (
+            <>
+              <PricingOptions onSelect={handleSubscribe} />
+              
+              <div className="mt-8 p-4 border rounded-lg">
+                <h3 className="text-lg font-medium mb-2">Have an invite code?</h3>
+                <div className="flex gap-2">
+                  <Input 
+                    type="text" 
+                    placeholder="Enter your invite code" 
+                    value={inviteCode}
+                    onChange={(e) => setInviteCode(e.target.value)}
+                    className="flex-1"
+                  />
+                  <Button onClick={handleSkipPayment}>
+                    Apply Code
+                  </Button>
+                </div>
+              </div>
+            </>
+          )}
 
           <div className="flex justify-between items-center pt-4 border-t">
             <Button variant="outline" onClick={step === "survey" ? () => onOpenChange(false) : handleBack}>
