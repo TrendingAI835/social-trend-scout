@@ -1,4 +1,3 @@
-
 import {
   Dialog,
   DialogContent,
@@ -123,6 +122,15 @@ export function DemoDialog({ open, onOpenChange }: DemoDialogProps) {
                   button: {
                     border: '1px solid transparent',
                   },
+                  anchor: {
+                    color: 'hsl(var(--primary))',
+                  },
+                  message: {
+                    color: 'rgb(229, 62, 62)',
+                  },
+                  divider: {
+                    background: 'hsl(var(--border))',
+                  },
                 },
                 variables: {
                   default: {
@@ -131,11 +139,14 @@ export function DemoDialog({ open, onOpenChange }: DemoDialogProps) {
                       brandAccent: 'hsl(var(--primary))',
                       inputBackground: 'white',
                       inputText: 'black',
+                      inputBorder: 'hsl(var(--border))',
+                      inputBorderFocus: 'hsl(var(--primary))',
+                      inputBorderHover: 'hsl(var(--border))',
                     }
                   }
                 }
               }}
-              providers={[]}
+              providers={["facebook"]}
               onlyThirdPartyProviders={false}
               redirectTo={window.location.origin}
             />
