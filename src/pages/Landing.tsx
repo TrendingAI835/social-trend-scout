@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, TrendingUp, Search, Bell } from "lucide-react";
@@ -42,7 +41,6 @@ export default function Landing() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <div className="flex-grow container mx-auto px-4 py-16">
-        {/* Hero Section */}
         <motion.div 
           className="text-center mb-16"
           initial={{ opacity: 0, y: 20 }}
@@ -73,23 +71,16 @@ export default function Landing() {
             <Button
               size="lg"
               onClick={() => setShowDemo(true)}
-              className="group relative overflow-hidden"
+              className="group relative overflow-hidden hover:bg-accent transition-colors duration-300"
             >
               <span className="relative z-10">
                 Get Started
                 <ArrowRight className="ml-2 h-4 w-4 inline-block transition-transform group-hover:translate-x-1" />
               </span>
-              <motion.div
-                className="absolute inset-0 bg-accent"
-                initial={{ x: "100%" }}
-                whileHover={{ x: 0 }}
-                transition={{ duration: 0.2 }}
-              />
             </Button>
           </motion.div>
         </motion.div>
 
-        {/* Features Grid */}
         <motion.div 
           className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto"
           initial={{ opacity: 0 }}
