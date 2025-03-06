@@ -99,6 +99,20 @@ export function SurveyForm({ onComplete }: SurveyFormProps) {
     }
   };
 
+  const handleSelection = (value: string, nextStep?: keyof SurveyData) => {
+    form.setValue(currentStep, value as any);
+    
+    if (nextStep) {
+      setTimeout(() => {
+        setCurrentStep(nextStep);
+      }, 300);
+    } else {
+      setTimeout(() => {
+        form.handleSubmit(handleSubmit)();
+      }, 300);
+    }
+  };
+
   const handleNext = (nextStep: keyof SurveyData) => {
     const currentValue = form.getValues(currentStep);
     if (!currentValue) {
@@ -145,7 +159,6 @@ export function SurveyForm({ onComplete }: SurveyFormProps) {
                   </FormLabel>
                   <FormControl>
                     <RadioGroup
-                      onValueChange={field.onChange}
                       className="grid grid-cols-1 gap-4"
                     >
                       {currentQuestion.options.map((option) => (
@@ -157,8 +170,16 @@ export function SurveyForm({ onComplete }: SurveyFormProps) {
                           <label
                             htmlFor={option.value}
                             className="flex items-center space-x-4 p-4 rounded-lg border-2 border-muted cursor-pointer transition-all duration-200 hover:border-primary hover:bg-primary/5"
+                            onClick={() => handleSelection(option.value, currentQuestion.next)}
                           >
-                            <RadioGroupItem value={option.value} id={option.value} />
+                            <RadioGroupItem 
+                              value={option.value} 
+                              id={option.value} 
+                              checked={field.value === option.value}
+                              onCheckedChange={() => {
+                                field.onChange(option.value);
+                              }}
+                            />
                             <div className="flex-1">
                               <Label htmlFor={option.value} className="text-lg font-medium">
                                 {option.label}
