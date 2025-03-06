@@ -1,3 +1,4 @@
+
 import {
   Dialog,
   DialogContent,
@@ -199,9 +200,13 @@ export function DemoDialog({ open, onOpenChange }: DemoDialogProps) {
           )}
 
           <div className="flex justify-between items-center pt-4 border-t">
-            <Button variant="outline" onClick={step === "survey" ? () => onOpenChange(false) : handleBack}>
-              {step === "survey" ? "Close" : "Back"}
-            </Button>
+            {/* Only show the Back/Close button for the pricing step, not for the survey step */}
+            {step === "pricing" && (
+              <Button variant="outline" onClick={handleBack}>
+                Back
+              </Button>
+            )}
+            {/* The survey step no longer has a Close button */}
           </div>
         </div>
       </DialogContent>
