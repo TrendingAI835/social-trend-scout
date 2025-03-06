@@ -176,9 +176,6 @@ export function SurveyForm({ onComplete }: SurveyFormProps) {
                               value={option.value} 
                               id={option.value} 
                               checked={field.value === option.value}
-                              onCheckedChange={() => {
-                                field.onChange(option.value);
-                              }}
                             />
                             <div className="flex-1">
                               <Label htmlFor={option.value} className="text-lg font-medium">
@@ -235,3 +232,5 @@ export function SurveyForm({ onComplete }: SurveyFormProps) {
     </Form>
   );
 }
+
+export default SurveyForm;
