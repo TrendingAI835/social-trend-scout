@@ -7,14 +7,12 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Landing from "./pages/Landing";
 import Dashboard from "./pages/Dashboard";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
-import { MouseFollower } from "./components/MouseFollower";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <MouseFollower />
       <Toaster />
       <Sonner />
       <BrowserRouter>
