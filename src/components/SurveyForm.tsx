@@ -1,3 +1,4 @@
+
 import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -85,7 +86,7 @@ const SurveyForm = ({ onComplete }: SurveyFormProps) => {
       }, 300);
     } else {
       setTimeout(() => {
-        form.handleSubmit(handleSubmit)();
+        form.handleSubmit(handleSubmit(form.getValues()))();
       }, 300);
     }
   };
@@ -98,7 +99,7 @@ const SurveyForm = ({ onComplete }: SurveyFormProps) => {
           Help us understand your interests better!
         </p>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSubmit())} className="space-y-8">
+          <form onSubmit={form.handleSubmit(handleSubmit(form.getValues()))} className="space-y-8">
             <FormField
               control={form.control}
               name={currentStep}

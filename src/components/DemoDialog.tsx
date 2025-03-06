@@ -1,4 +1,3 @@
-
 import {
   Dialog,
   DialogContent,
@@ -13,7 +12,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { useState } from "react";
-import { SurveyForm } from "./SurveyForm";
+import SurveyForm from "./SurveyForm";
 import { PricingOptions } from "./PricingOptions";
 import { Input } from "./ui/input";
 
@@ -81,7 +80,6 @@ export function DemoDialog({ open, onOpenChange }: DemoDialogProps) {
   };
 
   const handleSkipPayment = async () => {
-    // Hardcoded invite codes that bypass payment
     const validInviteCodes = ["BETA2024", "EARLYACCESS", "FOUNDER"];
     
     if (validInviteCodes.includes(inviteCode.trim().toUpperCase())) {
@@ -200,13 +198,11 @@ export function DemoDialog({ open, onOpenChange }: DemoDialogProps) {
           )}
 
           <div className="flex justify-between items-center pt-4 border-t">
-            {/* Only show the Back/Close button for the pricing step, not for the survey step */}
             {step === "pricing" && (
               <Button variant="outline" onClick={handleBack}>
                 Back
               </Button>
             )}
-            {/* The survey step no longer has a Close button */}
           </div>
         </div>
       </DialogContent>
