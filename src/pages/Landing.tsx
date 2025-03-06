@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, TrendingUp, Search, Bell } from "lucide-react";
@@ -39,7 +40,7 @@ export default function Landing() {
   ];
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col relative z-10">
       <div className="flex-grow container mx-auto px-4 py-16">
         <motion.div 
           className="text-center mb-16"
