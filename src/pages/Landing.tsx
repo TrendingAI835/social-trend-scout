@@ -40,7 +40,7 @@ export default function Landing() {
   ];
 
   return (
-    <div className="min-h-screen bg-background flex flex-col relative z-10">
+    <div className="min-h-screen bg-background/70 backdrop-blur-sm flex flex-col relative z-10">
       <div className="flex-grow container mx-auto px-4 py-16">
         <motion.div 
           className="text-center mb-16"
@@ -91,7 +91,7 @@ export default function Landing() {
           {features.map((feature, index) => (
             <motion.div
               key={feature.title}
-              className="trend-card p-6 cursor-pointer will-change-transform"
+              className="trend-card p-6 cursor-pointer will-change-transform backdrop-blur-sm"
               onClick={() => setSelectedFeature(feature)}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
