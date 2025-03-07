@@ -40,7 +40,7 @@ export default function Landing() {
   ];
 
   return (
-    <div className="min-h-screen bg-background/70 backdrop-blur-sm flex flex-col relative z-10">
+    <div className="min-h-screen bg-background flex flex-col relative z-10">
       <div className="flex-grow container mx-auto px-4 py-16">
         <motion.div 
           className="text-center mb-16"
@@ -54,7 +54,9 @@ export default function Landing() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3 }}
           >
-            Social Trend Scout
+            <span className="hover-color-text">Social</span>{" "}
+            <span className="hover-color-text">Trend</span>{" "}
+            <span className="hover-color-text">Scout</span>
           </motion.h1>
           <motion.p 
             className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto"
@@ -62,7 +64,19 @@ export default function Landing() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3, delay: 0.2 }}
           >
-            Discover trending content, track engagement metrics, and stay ahead of social media trends with powerful analytics.
+            <span className="hover-color-text">Discover</span>{" "}
+            <span className="hover-color-text">trending</span>{" "}
+            <span className="hover-color-text">content</span>, {" "}
+            <span className="hover-color-text">track</span>{" "}
+            <span className="hover-color-text">engagement</span>{" "}
+            <span className="hover-color-text">metrics</span>, and {" "}
+            <span className="hover-color-text">stay</span>{" "}
+            <span className="hover-color-text">ahead</span> of {" "}
+            <span className="hover-color-text">social</span>{" "}
+            <span className="hover-color-text">media</span>{" "}
+            <span className="hover-color-text">trends</span> with {" "}
+            <span className="hover-color-text">powerful</span>{" "}
+            <span className="hover-color-text">analytics</span>.
           </motion.p>
           <motion.div
             initial={{ opacity: 0 }}
@@ -75,7 +89,8 @@ export default function Landing() {
               className="group relative overflow-hidden hover:bg-accent transition-colors duration-300"
             >
               <span className="relative z-10">
-                Get Started
+                <span className="hover-color-text">Get</span>{" "}
+                <span className="hover-color-text">Started</span>
                 <ArrowRight className="ml-2 h-4 w-4 inline-block transition-transform group-hover:translate-x-1" />
               </span>
             </Button>
@@ -91,7 +106,7 @@ export default function Landing() {
           {features.map((feature, index) => (
             <motion.div
               key={feature.title}
-              className="trend-card p-6 cursor-pointer will-change-transform backdrop-blur-sm"
+              className="trend-card p-6 cursor-pointer will-change-transform"
               onClick={() => setSelectedFeature(feature)}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -112,9 +127,15 @@ export default function Landing() {
               >
                 {feature.icon}
               </motion.div>
-              <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+              <h3 className="text-xl font-semibold mb-2">
+                {feature.title.split(' ').map((word, i) => (
+                  <span key={i} className="hover-color-text">{word} </span>
+                ))}
+              </h3>
               <p className="text-muted-foreground">
-                {feature.description}
+                {feature.description.split(' ').map((word, i) => (
+                  <span key={i} className="hover-color-text">{word} </span>
+                ))}
               </p>
             </motion.div>
           ))}
